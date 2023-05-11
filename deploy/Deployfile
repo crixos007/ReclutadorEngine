@@ -1,0 +1,38 @@
+*******DESARROLLO-192.168.0.88*******
+docker build -t pandora /home/admindocker/deployDesarrollo/PANDORA/Pandora
+docker run -e "CONFIG_ENVIROMENT=env-var-conf-DES" -e "SERVER_ENVIROMENT=http://192.168.0.62:1000/" --name pandora --mount type=bind,source=/mnt/FileServerDev/,target=/mnt/FileServerDev/ -d --restart unless-stopped -p 7001:7001 pandora
+---------------
+docker stop pandora
+docker rm $(docker ps -a -f status=exited -q)
+docker rmi pandora
+
+*******DEVTEST-192.168.0.62*******
+docker build -t pandora /home/admindocker/deployDES/PANDORA/Pandora
+docker run -e "CONFIG_ENVIROMENT=env-var-conf-DES" -e "SERVER_ENVIROMENT=http://192.168.0.62:1000/" --name pandora  --mount type=bind,source=/mnt/FileServerDev/,target=/mnt/FileServerDev/ -d --restart unless-stopped -p 7001:7001 pandora
+---------------
+docker stop pandora
+docker rm $(docker ps -a -f status=exited -q)
+docker rmi pandora
+
+*******CALIDAD-192.168.0.63*******
+docker build -t pandora /home/soaqa/deployQA/PANDORA/Pandora
+docker run -e "CONFIG_ENVIROMENT=env-var-conf-QA" -e "SERVER_ENVIROMENT=http://192.168.0.62:1000/" --name pandora  --mount type=bind,source=/mnt/FileServerDev/,target=/mnt/FileServerQA/ -d --restart unless-stopped -p 7001:7001 pandora
+---------------
+docker stop pandora
+docker rm $(docker ps -a -f status=exited -q)
+docker rmi pandora
+
+
+****************************COMANDOS PARA EJECUTAR SHELL Y VERIFICAR INSTALACION****************************
+dos2unix /home/admindocker/deployDesarrollo/SH-INSTALL/pandora.sh
+chmod 775 /home/admindocker/deployDesarrollo/SH-INSTALL/pandora.sh
+
+/home/admindocker/deployDesarrollo/SH-INSTALL/pandora.sh admindocker/deployDesarrollo des DES /mnt/FileServerDev/
+docker logs pandora --tail all
+---------------
+QA
+dos2unix /home/soaqa/deployQA/SH-INSTALL/pandora.sh
+chmod 775 /home/soaqa/deployQA/SH-INSTALL/pandora.sh
+
+/home/soaqa/deployQA/SH-INSTALL/pandora.sh soaqa/deployQA qa QA /mnt/FileServerQA/
+docker logs pandora --tail all

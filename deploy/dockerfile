@@ -1,0 +1,4 @@
+FROM openjdk:11
+ADD Pandora.jar Pandora.jar
+EXPOSE 7001
+ENTRYPOINT ["java", "-jar", "/Pandora.jar"]

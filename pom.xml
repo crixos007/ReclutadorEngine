@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.5.14</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+		
+	<groupId>com.vsm.pandora</groupId>
+	<artifactId>Pandora</artifactId>
+	<version>${revision}</version>
+	
+	<name>Pandora</name>
+	<description>Microsrvicio REST para operaciones de pandora</description>
+	
+	<properties>
+		<java.version>11</java.version>
+		<spring-cloud.version>2020.0.4</spring-cloud.version>		
+		<maven.compiler.source>11</maven.compiler.source>
+	    <maven.compiler.target>11</maven.compiler.target>
+	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	    <sleuth.version>2.2.5.RELEASE</sleuth.version>
+	    <log4j2.version>2.17.1</log4j2.version>
+	    
+		<revision>1.0.1</revision>
+		<jarName>${project.artifactId}-${project.version}</jarName>	    
+	</properties>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+		         <exclusion>
+		            <groupId>commons-logging</groupId>
+		            <artifactId>commons-logging</artifactId>
+		         </exclusion>
+			</exclusions>
+		</dependency>
+		
+		<!--ULTIMA VERSION SIN VULNERABILIDAD LOG4J  -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>2.19.0</version><!--$NO-MVN-MAN-VER$-->
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.19.0</version><!--$NO-MVN-MAN-VER$-->
+		</dependency>
+		<dependency>
+		    <groupId>org.slf4j</groupId>
+		    <artifactId>slf4j-log4j12</artifactId>		    
+		</dependency>
+		
+		<!-- DEPENDENCIAS BASICAS-->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-config</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web-services</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.20</version><!--$NO-MVN-MAN-VER$-->
+		</dependency>		
+		<dependency>
+      		<groupId>org.springframework.boot</groupId>
+      		<artifactId>spring-boot-starter-actuator</artifactId>
+    	</dependency>
+    	<dependency>
+		  	<groupId>org.springframework</groupId>
+		  	<artifactId>spring-context-indexer</artifactId>
+		  	<optional>true</optional>
+		</dependency>
+    	<dependency> 
+			<groupId>entityUtil</groupId> 
+			<artifactId>entityUtil</artifactId> 
+			<version>0.6.3</version> 
+		</dependency>			
+
+    	<!-- dependencias para JWT -->
+	   	<dependency>
+		    <groupId>io.jsonwebtoken</groupId>
+		    <artifactId>jjwt</artifactId>
+		    <version>0.9.1</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+				
+		<!-- DEPENDENCIAS ESPECIFICAS DEL PROYECTO-->
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>2.3.7</version>
+		</dependency>
+	    <dependency>
+	        <groupId>org.apache.pdfbox</groupId>
+	        <artifactId>pdfbox</artifactId>
+	        <version>2.0.9</version>
+	    </dependency>
+	    
+	    <!-- dependencias para leer csv y xlsx -->	    
+		<dependency>
+		    <groupId>com.opencsv</groupId>
+		    <artifactId>opencsv</artifactId>
+		    <version>5.7.1</version>
+		</dependency>
+		<dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>4.1.2</version>
+        </dependency>        
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>4.1.2</version>
+        </dependency>
+	</dependencies>
+	
+	<repositories>
+		<repository> 
+			<id>project-common</id> 
+			<name>Project Common</name> 
+			<url>https://bitbucket.org/rcaraveog/config_env/raw/master/</url> 
+		</repository>
+	</repositories>	
+	
+	<!-- DEPENDENCIA PARA ARCHIVO DE CONFIGURACION EXTERNO-->
+	<dependencyManagement>
+		<dependencies>						
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>	
+
+	<profiles>
+	    <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <activatedProperties>local</activatedProperties>
+            </properties>
+        </profile>
+        <profile>
+            <id>des</id>
+            <properties>
+                <activatedProperties>des</activatedProperties>
+            </properties>
+        </profile>
+        <profile>
+            <id>devtest</id>
+            <properties>
+                <activatedProperties>devtest</activatedProperties>
+            </properties>
+        </profile>        
+        <profile>
+            <id>qa</id>
+            <properties>
+                <activatedProperties>qa</activatedProperties>
+            </properties>
+        </profile>         
+        <profile>
+            <id>prod</id>
+            <properties>
+                <activatedProperties>prod</activatedProperties>
+            </properties>
+        </profile> 
+	</profiles>		
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>				
+		        <configuration>
+		            <finalName>${jarName}</finalName>
+		        </configuration>				
+			</plugin>
+		</plugins>
+	</build>
+</project>
